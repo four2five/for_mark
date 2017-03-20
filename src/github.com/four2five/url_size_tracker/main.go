@@ -6,6 +6,7 @@ import(
 
 const (
   MAX_URL_SIZE int = 32
+  DEBUG bool = false
 )
 
 
@@ -58,7 +59,9 @@ func (u *URLLengthTracker) AddURL(url string){
 // on the data that has come in since the last call to
 // GetMedianURLLength
 func (u *URLLengthTracker) GetMedianURLLength() int {
-	fmt.Printf("current counts: %+v\n", u.URLLengths)
+  if DEBUG {
+	  fmt.Printf("current counts: %+v\n", u.URLLengths)
+  }
   totalChange := u.recentValuesGreaterThanLastMedian - u.recentValuesLessThanLastMedian
 	// divide by half and round up to get the net change
 	netOffsetChange := totalChange/2
@@ -66,7 +69,9 @@ func (u *URLLengthTracker) GetMedianURLLength() int {
 		netOffsetChange++
 	}
 
-	fmt.Printf("netOffsetChange %d\n", netOffsetChange)
+  if DEBUG {
+	  fmt.Printf("netOffsetChange %d\n", netOffsetChange)
+  }
 
   // TODO: Adjust by the number of recent values that were equal to the index
   /*
@@ -111,7 +116,6 @@ func (u *URLLengthTracker) GetMedianURLLength() int {
     }
 
     for netOffsetChange < 0 {
-			fmt.Printf("lmi: %d\n", u.lastMedianIndex)
       u.lastMedianIndex--
       netOffsetChange += u.URLLengths[u.lastMedianIndex]
     }
